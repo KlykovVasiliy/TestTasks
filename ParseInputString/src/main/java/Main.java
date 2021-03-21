@@ -3,18 +3,20 @@ import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
-//        String strInput1 = "3[xyz]4[xy]z";                   //xyzxyzxyzxyxyxyxyz
-        String strInput1 = "2[3[x]y]";
+        String strInput1 = "3[xyz]4[xy]z";                   //xyzxyzxyzxyxyxyxyz
+//        String strInput1 = "2[3[x]y]";
 
         Pattern pattern = Pattern.compile("\\d+\\[[a-zA-Z]+\\][a-zA-Z]*");
         Matcher matcher = pattern.matcher(strInput1);
 
         System.out.println(strInput1);
         while (matcher.find()) {
-            strInput1 = matcher.replaceFirst(inBracket(strInput1.substring(matcher.start(), matcher.end())));
+            strInput1 = matcher.replaceFirst(inBracket(strInput1.substring(matcher.start(),
+                    matcher.end())));
             Matcher matcher1 = pattern.matcher(strInput1);
             if (matcher1.find()) {
-                strInput1 = matcher1.replaceFirst(inBracket(strInput1.substring(matcher1.start(), matcher1.end())));
+                strInput1 = matcher1.replaceFirst(inBracket(strInput1.substring(matcher1.start(),
+                        matcher1.end())));
                 break;
             }
         }
