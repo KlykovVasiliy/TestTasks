@@ -1,0 +1,9 @@
+//Создание БД и таблицы
+CREATE SCHEMA `testing_db` ;
+CREATE TABLE `testing_db`.`test` (
+  `field` INT NOT NULL,
+  PRIMARY KEY (`field`));
+  
+//Создание пользователя в БД и установка пароля
+ CREATE USER  'tanderuser'@'localhost' identified by 'tanderuser';
+grant all privileges on * . * TO 'tanderuser'@'localhost';  
