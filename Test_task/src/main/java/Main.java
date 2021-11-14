@@ -7,18 +7,18 @@ public class Main {
             "?useUnicode=true&serverTimezone=Europe/Moscow&characterEncoding=UTF-8";
 
     public static void main(String[] args) {
-//        String userLogin = "tanderuser";
-//        String userPassword = "tanderuser";
-//        int numberN = 1000000;
+        String userLogin = "tanderuser";
+        String userPassword = "tanderuser";
+        int numberN = 1000000;
 //        int numberN = 50;
 
         Scanner scanner = new Scanner(System.in);
         printUserLogin();
-        String userLogin = scanner.nextLine();
+//        String userLogin = scanner.nextLine();
         printUserPassword();
-        String userPassword = scanner.nextLine();
+//        String userPassword = scanner.nextLine();
         printInputNumber();
-        int numberN = scanner.nextInt();
+//        int numberN = scanner.nextInt();
 
         //Данный фрагмент не менять
         long timeStart = System.currentTimeMillis();

@@ -25,8 +25,8 @@ import java.util.List;
 
 public class LocalFile {
     private int fieldObject;
-    private static String firstFile = "/1.xml";
-    private static String secondFile = "/2.xml";
+    private static String firstFile = "src/main/resources/1.xml";
+    private static String secondFile = "src/main/resources/2.xml";
     private static String xsltFile = "src/main/resources/TemplateForTransform.xslt";
 
     public LocalFile(int fieldObject) {
