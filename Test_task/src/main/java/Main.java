@@ -1,69 +1,80 @@
-import java.util.Scanner;
+import util.ConfigFileToConnection;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    //Учетные данные для подключения к БД
-    private static final String bdAndServer = "mysql://localhost:3306/testing_db";
-    private static final String url = "jdbc:" + bdAndServer +
-            "?useUnicode=true&serverTimezone=Europe/Moscow&characterEncoding=UTF-8";
 
     public static void main(String[] args) {
-        String userLogin = "tanderuser";
-        String userPassword = "tanderuser";
-        int numberN = 1000000;
-//        int numberN = 50;
 
-        Scanner scanner = new Scanner(System.in);
-        printUserLogin();
-//        String userLogin = scanner.nextLine();
-        printUserPassword();
-//        String userPassword = scanner.nextLine();
-        printInputNumber();
-//        int numberN = scanner.nextInt();
-
-        //Данный фрагмент не менять
         long timeStart = System.currentTimeMillis();
-
-        //Инициализация объекта
-        InsertDataInBase insertDataInBase = new InsertDataInBase();
-        insertDataInBase.setUrl(url);
-        insertDataInBase.setUser(userLogin);
-        insertDataInBase.setPassword(userPassword);
-        insertDataInBase.setNumber(numberN);
-
-        //Запуск команды по добавлению строк в БД
-        insertDataInBase.addedRowsInMultiThread(insertDataInBase.getListCommandsForInsert(numberN));
-
-        //Получение строк из БД и запись в xml файл
-        LocalFile.writeToInXmlFile(LocalFile
-                .getValuesFromDataBase(url, userLogin, userPassword));
-
+        createFileConfig();
+        EditingATable.setCountString(getNumberOfLinesForDB());
+//        EditingATable.setCountString(1000000);
         printSumAllNumbers();
-        printCountRowsInDataBase(insertDataInBase.getCountRowsInDataBase());
         long timeEnd = System.currentTimeMillis();
+
         printTimeWorkProgram(timeStart, timeEnd);
     }
 
+    private static void createFileConfig() {
+        ConfigFileToConnection config = ConfigFileToConnection.getConfigFileToConnection();
+//        String userLogin = "tanderuser";
+//        String userPassword = "tanderuser";
+        String url = "jdbc:mysql://localhost:3306/";
+        String userLogin = null;
+        String userPassword = null;
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            printUrl();
+            url += reader.readLine();
+            printUserLogin();
+            userLogin = reader.readLine();
+            printUserPassword();
+            userPassword = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        config.setConfig(userLogin, userPassword, url, getPoolSize());
+    }
+
+    private static String getPoolSize() {
+        return String.valueOf(Runtime.getRuntime().availableProcessors());
+    }
+
+    private static Integer getNumberOfLinesForDB() {
+        printInputNumber();
+        int countLine = 0;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            countLine = Integer.parseInt(reader.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return countLine;
+    }
+
+    private static void printUrl() {
+        System.out.println("Enter name DataBase:");
+    }
+
     private static void printUserLogin() {
-        System.out.println("Введите логин пользователя для доступа к БД");
+        System.out.println("Enter name user");
     }
 
     private static void printUserPassword() {
-        System.out.println("Введите пароль пользователя для доступа к БД");
+        System.out.println("Enter password");
     }
 
     private static void printInputNumber() {
-        System.out.println("Введите число N");
+        System.out.println("Enter number");
     }
 
     private static void printTimeWorkProgram(long start, long end) {
         System.out.printf("Время выполнения программы %d мс%n", end - start);
     }
 
-    private static void printCountRowsInDataBase(int countRows) {
-        System.out.printf("Количество записей в таблице %d%n", countRows);
-    }
-
     private static void printSumAllNumbers() {
-        System.out.printf("Сумма всех чисел в файле %d%n", LocalFile.getSumAllNumbers());
+        System.out.printf("Сумма всех чисел в файле %d%n", FileXML.getSumAllNumbers());
     }
 }
